@@ -29,6 +29,17 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const request = require('request');
 
+console.log("Environment Variables Output Check:");
+  console.log("***");
+  console.log(`Chain:                         ${process.env.CHAIN}`);
+  console.log(`Stash account address:         ${process.env.STASH_ACCOUNT_ADDRESS}`);
+  console.log(`Stash account alias:           ${process.env.STASH_ACCOUNT_ALIAS}`);
+  console.log(`proxy account mnemonic:        ${process.env.PROXY_ACCOUNT_MNEMONIC}`);
+  console.log(`Voting proxy account alias:    ${process.env.PROXY_ACCOUNT_ALIAS}`);
+  console.log(`Node RPC endpoint in use:      ${process.env.NODE_ENDPOINT}`);
+  console.log(`Vote repo in use:              ${process.env.VOTE_REPO}`);
+console.log("***");
+
 async function sendErrorToSlackAndExit(message: string) {
   console.error(message);
   if (process.env.SLACK_ALERT_TOKEN) {
