@@ -3,8 +3,9 @@
 
  * All inputs come from environment variables:
  * 
- *  * NODE_ENDPOINT : the polkadot/kusama node rpc (localhost)
- *  * PROXY_ACOUNT_MNEMONIC: 12 words of the account for which the stash has delegated Governance rights via proxy (should have little balance, just for fees)
+ *  * NODE_ENDPOINT: the polkadot/kusama node rpc (localhost)
+ *  * PROXY_ACCOUNT_MNEMONIC: 12 words of the account for which the stash has delegated Governance rights via proxy (should have little balance, just for fees)
+ *  * PROXY_ACCOUNT_ALIAS: an alias for the votebot account
  *  * STASH_ACCOUNT_ADDRESS: the address of the validator's stash
  *  * STASH_ACCOUNT_ALIAS: an alias for your validator
  *  * VOTE_REPO: the github repository where your vote choices are kept in yaml format, for example midl-dev/dotsama-votes
@@ -31,8 +32,8 @@ const request = require('request');
 async function sendErrorToSlackAndExit(message: string) {
   console.error(message);
   if (process.env.SLACK_ALERT_TOKEN) {
-    const slackWeb = new WebClient(process.env.SLACK_ALERT_TOKEN!);
-    await slackWeb.chat.postMessage({ text: message, channel: process.env.SLACK_ALERT_CHANNEL! })
+    const slackWeb = new WebClient(process.env.SLACK_ALERT_TOKEN);
+    await slackWeb.chat.postMessage({ text: message, channel: process.env.SLACK_ALERT_CHANNEL })
   }
   process.exit(1)
 }
@@ -45,9 +46,9 @@ async function main() {
   const keyring = new Keyring({ type: 'sr25519' });
 
   // Add the voteBot account to our keyring
-  const voteBotKey = keyring.addFromUri(process.env.PROXY_ACCOUNT_MNEMONIC!);
+  const voteBotKey = keyring.addFromUri(process.env.PROXY_ACCOUNT_MNEMONIC);
 
-  const stash_account: string = process.env.STASH_ACCOUNT_ADDRESS!;
+  const stash_account: string = process.env.STASH_ACCOUNT_ADDRESS;
   const stash_alias = process.env.STASH_ACCOUNT_ALIAS; //optional
   const vote_bot_alias = process.env.PROXY_ACCOUNT_ALIAS; //optional
   const chain = process.env.CHAIN;
